@@ -33,13 +33,17 @@ export default function Month({
 
       {/* 7*5 table for month */}
       <div className="flex-1 grid grid-cols-7 grid-rows-5">
-        {month.map((row, i) => (
-          <React.Fragment key={i}>
-            {row.map((day, idx) => (
-              <Day day={day} key={idx} rowIdx={i} />
-            ))}
-          </React.Fragment>
-        ))}
+        {month.map((row, i) => {
+          if (row[0].month() !== monthIndex && row[6].month() !== monthIndex)
+            return <></>;
+          return (
+            <React.Fragment key={i}>
+              {row.map((day, idx) => (
+                <Day day={day} key={idx} rowIdx={i} monthIdx={monthIndex} />
+              ))}
+            </React.Fragment>
+          );
+        })}
       </div>
     </div>
   );

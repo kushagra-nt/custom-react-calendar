@@ -4,7 +4,15 @@ import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 // import { useEffect, useState } from "react";
 
-export default function Day({ day, rowIdx }: { day: Dayjs; rowIdx: number }) {
+export default function Day({
+  day,
+  rowIdx,
+  monthIdx,
+}: {
+  day: Dayjs;
+  rowIdx: number;
+  monthIdx: number;
+}) {
   const [dayEvent, setDayEvent] = useState<null | Event>(null);
   const { allEvents, setDaySelected, setShowEventModal, setSelectedEvent } =
     useGlobalContext();
@@ -30,6 +38,7 @@ export default function Day({ day, rowIdx }: { day: Dayjs; rowIdx: number }) {
         className="flex-1 cursor-pointer"
         onClick={() => {
           // this will open modal to add event
+          if (day.month() !== monthIdx) return;
           setDaySelected(day);
           setShowEventModal(true);
         }}
@@ -43,11 +52,13 @@ export default function Day({ day, rowIdx }: { day: Dayjs; rowIdx: number }) {
           )}
 
           {/* this to display date */}
-          <p
-            className={`text-xs sm:text-sm p-1 my-1 text-center  ${getCurrentDayClass()}`}
-          >
-            {day.format("DD")}
-          </p>
+          {day.month() === monthIdx && (
+            <p
+              className={`text-xs sm:text-sm p-1 my-1 text-center  ${getCurrentDayClass()}`}
+            >
+              {day.format("DD")}
+            </p>
+          )}
         </header>
 
         {/* if some event is already there on this day */}
